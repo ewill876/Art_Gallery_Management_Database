@@ -1,0 +1,96 @@
+CREATE TABLE artist (
+artist_id INT PRIMARY KEY,
+firstname VARCHAR (40),
+lastname VARCHAR (40),
+birthdate DATE,
+birthplace VARCHAR (40),
+address VARCHAR (40),
+city VARCHAR (40),
+zip INT,
+state VARCHAR (2),
+country VARCHAR (40),
+phonenumber INT,
+style VARCHAR (40)
+);
+
+DROP TABLE artist;
+
+
+CREATE TABLE customer (
+    customer_id INT PRIMARY KEY,
+    firstname VARCHAR (40),
+    lastname VARCHAR (40),
+    phonenumber INT,
+    address VARCHAR (40),
+    city VARCHAR (40),
+    state VARCHAR (2),
+    zipcode INT,
+    country VARCHAR (40),
+    email VARCHAR (40)
+);
+
+DROP TABLE customer;
+
+CREATE TABLE exhibition (
+    exhibition_id INT PRIMARY KEY,
+    name_gallery VARCHAR (40),
+    startdate DATE,
+    enddate DATE,
+    country VARCHAR (40),
+    city VARCHAR (40),
+    state VARCHAR (2),
+    zipcode INT
+);
+
+CREATE TABLE artwork (
+    art_id INT PRIMARY KEY,
+    year YEAR,
+    title VARCHAR (40),
+    price INT,
+    description VARCHAR (40),
+    type VARCHAR (40),
+    artist_id INT,
+    rentalid INT,
+    orderid INT
+);
+
+ALTER TABLE artwork
+ADD FOREIGN KEY (artist_id) 
+REFERENCES artist (artist_id)
+ON DELETE SET NULL;
+
+
+
+DROP TABLE artwork;
+
+CREATE TABLE art_exhibition (
+    exhibition_id INT,
+    art_id INT,
+    FOREIGN KEY (exhibition_id) REFERENCES exhibition (exhibition_id) ON DELETE SET NULL,
+    FOREIGN KEY (art_id) REFERENCES artwork (art_id) ON DELETE SET NULL
+
+);
+
+CREATE TABLE order_to_buy (
+    orderid INT PRIMARY KEY,
+    order_price INT,
+    orderdate DATE,
+    art_id INT,
+    customer_id INT,
+    FOREIGN KEY (art_id) REFERENCES artwork (art_id) ON DELETE SET NULL,
+    FOREIGN KEY (customer_id) REFERENCES customer (customer_id) ON DELETE SET NULL
+   
+);
+
+DROP TABLE order_to_buy;
+
+CREATE TABLE rental (
+    rentalid INT PRIMARY KEY,
+    rentalstartdate DATE,
+    rentalendate DATE,
+    rental_price INT,
+    art_id INT,
+    customer_id INT,
+    FOREIGN KEY (art_id) REFERENCES artwork (art_id) ON DELETE SET NULL,
+    FOREIGN KEY (customer_id) REFERENCES customer (customer_id) ON DELETE SET NULL 
+);
